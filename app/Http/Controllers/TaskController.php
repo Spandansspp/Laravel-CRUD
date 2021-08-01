@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::latest()->paginate(10);
+        $tasks = Task::latest()->paginate(5);
     
         return view('tasks.index',compact('tasks'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -39,8 +39,8 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:500'],
         ]);
 
         Task::create($request->all());
@@ -81,8 +81,8 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'title' => 'required',
-            'description' => 'required',
+            'title' => ['required', 'max:255'],
+            'description' => ['required', 'max:500'],
         ]);
     
         $task->update($request->all());
